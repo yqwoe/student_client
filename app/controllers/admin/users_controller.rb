@@ -2,7 +2,7 @@ class Admin::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    if policy(:user).isAdmin?
+    if policy(:user).isUserman?
       @users=User.page(params[:page])
     end
     if policy(:user).isSupervisor?

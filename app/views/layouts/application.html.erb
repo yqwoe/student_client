@@ -49,23 +49,32 @@
     <%= link_to 'StudentClient', root_path, class: 'navbar-brand' %>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
       <ul class="nav navbar-nav">
-        <% if policy(:user).isSupervisor? || policy(:user).isAdmin? %>
+        <% if policy(:user).isSupervisor? || policy(:user).isUserman? %>
             <li><%= link_to "用户管理", admin_users_path %></li>
         <% end %>
+
+
+        <% if policy(:user).isSupervisor? || policy(:user).isStaff?|| policy(:user).isUserman? ||policy(:user).isAdmin? %>
         <li><%= link_to "客户信息", students_path  %></li>
-        <li><%= link_to "学校", schools_path %></li>
-        <li><%= link_to "专业", departments_path %></li>
-        <li><%= link_to "年届", thes_path %></li>
+            <% end %>
+        <% if policy(:user).isAdmin? %>
+            <li><%= link_to "学校", schools_path %></li>
+            <li><%= link_to "专业", departments_path %></li>
+            <li><%= link_to "年届", thes_path %></li>
+        <% end %>
         <li><%= link_to "课程", courses_path %></li>
       </ul>
-
+      <%= form_tag students_path, method: :get, class: "navbar-form navbar-left" do %>
+          <div class="form-group">
+            <%= search_field_tag "q", params["q"], class: "form-control input-sm search-form", placeholder: "输入学员名字或手机号" %>
+          </div>
+      <% end %>
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-            <li><%= link_to current_user.email, profile_path %></li>
+            <li><%= link_to current_user.mobile, profile_path %></li>
             <li><%= link_to "退出", destroy_user_session_path, method: :delete %></li>
         <% else %>
             <li><%= link_to "登陆", new_user_session_path %></li>
-            <!--<li><%= link_to "注册", new_user_registration_path %></li>-->
         <% end %>
       </ul>
 
@@ -83,13 +92,19 @@
       <div class="well sidebar-nav">
         <h3>StudentClient</h3>
         <ul class="nav nav-list">
-          <% if policy(:user).isSupervisor? || policy(:user).isAdmin? %>
+          <% if policy(:user).isSupervisor? || policy(:user).isUserman? %>
               <li><%= link_to "用户管理", admin_users_path %></li>
           <% end %>
-          <li><%= link_to "客户信息", students_path  %></li>
-          <li><%= link_to "学校", schools_path %></li>
-          <li><%= link_to "专业", departments_path %></li>
-          <li><%= link_to "年届", thes_path %></li>
+
+
+          <% if policy(:user).isSupervisor? || policy(:user).isStaff? %>
+              <li><%= link_to "客户信息", students_path  %></li>
+          <% end %>
+          <% if policy(:user).isAdmin? %>
+              <li><%= link_to "学校", schools_path %></li>
+              <li><%= link_to "专业", departments_path %></li>
+              <li><%= link_to "年届", thes_path %></li>
+          <% end %>
           <li><%= link_to "课程", courses_path %></li>
         </ul>
       </div>

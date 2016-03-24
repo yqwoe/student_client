@@ -14,5 +14,6 @@ module Entities
     expose :creator, documentation: {type: String, desc: '招生专员'}
     expose :comments, documentation: {type: Comment, desc: '评论'}
     expose :state, documentation: {type: String, desc: '#0客户 1 开始学习'}
+    expose :time, documentation: {type: String, desc: '录入时间'}
   end
 end

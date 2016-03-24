@@ -17,4 +17,8 @@ class UserPolicy < ApplicationPolicy
     @current_user.has_role? :staff
   end
 
+  def isUserman?
+    @current_user.has_role? :userman
+  end
+
 end

@@ -15,12 +15,12 @@ class StudentV1API < Grape::API
   end
 
   desc '创建学生信息', {
-                              :headers => {
-                                  "Authentication-Token" => {
-                                      description: "用户Token",
-                                      required: true
-                                  }
-                              },
+                              # :headers => {
+                              #     "Authentication-Token" => {
+                              #         description: "用户Token",
+                              #         required: true
+                              #     }
+                              # },
                               :entity => Entities::Student
                           }
   params do
@@ -29,8 +29,33 @@ class StudentV1API < Grape::API
   end
   post 'createstudent' do
     json=JSON.parse(params[:student])
+    token=json['token']
+    json=json.delete_if {|k,v| k == 'token'}
     student=Student.new(json)
-    student.creator=@current_user
+    student.creator=User.find_by(authentication_token: token)
+    if student.save
+      {:success => true, :student_id => student.id.to_s}
+    else
+      error!({"message" => terminator.errors}, 403)
+    end
+  end
+
+  desc '创建学生信息', {
+                   :headers => {
+                       "Authentication-Token" => {
+                           description: "用户Token",
+                           required: true
+                       }
+                   },
+                   :entity => Entities::Student
+               }
+  params do
+    requires :student_id, type: String, desc: '学生id'
+    requires :state, type: String, desc: '学生id'
+  end
+  post 'updatestudent' do
+    student=Student.find(params[:student_id])
+    student.state=params[:state].to_i
     if student.save
       {:success => true, :id => student.id}
     else

@@ -7,7 +7,7 @@ class Student
   field :qq
   field :wx
   field :id_card
-  field :pay_type #付款类型
+  field :pay_type ,type: Integer #付款类型
   field :state,type: Integer ,default: 0 #0客户 1 开始学习
 
   has_many :comments

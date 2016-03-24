@@ -4,7 +4,7 @@ class Comment
 
   field :text
   belongs_to :student
-  belongs_to :creator,:clacc_name => "User"
+  belongs_to :creator,:class_name => "User"
 
   def to_s
     text

@@ -4,7 +4,7 @@ class CommentV1API < Grape::API
   helpers do
     def current_user
       token = headers['Authentication-Token']
-      @current_user = User.find_by(authentication_token: token)
+      @current_user = User.find_by(authentication_token: params["Authentication-Token"])
     rescue
       error!('401 Unauthorized', 401)
     end
@@ -28,8 +28,9 @@ class CommentV1API < Grape::API
     requires :text, type: String, desc: '评论信息'
   end
   post 'createcomment' do
+    p "#{@current_user.to_json}"
     student=Student.find(params[:student_id])
-    comment=Comment.new(:student=>student,:text=>params[:text],:creator=>@current_user)
+    comment=Comment.new(:student=>student,:text=>params[:text],:creator=>User.find_by(authentication_token: params["Authentication-Token"]))
     if comment.save
       {id:comment.id.to_s,text:comment.text,student_id:comment.student_id.to_s,creator:comment.creator.to_s,time:comment.created_at}
     else

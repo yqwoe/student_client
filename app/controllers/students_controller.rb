@@ -4,12 +4,23 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.json
   def index
-    @students = Student.page(params[:page])
+
+
+    if params[:q].present?
+      @students = Student.or({:name=>/#{params[:q]}/},{mobile:/#{params[:q]}/})
+    end
+    if policy(:user).isStaff?
+      @students=current_user.students
+    else
+      @students = Student.all.order('created_at desc')
+    end
+    @students=@students.page(params[:page])
   end
 
   # GET /students/1
   # GET /students/1.json
   def show
+    @comments=@student.comments
   end
 
   # GET /students/new

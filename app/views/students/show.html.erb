@@ -7,29 +7,73 @@
   <dt><strong>手机号:</strong></dt>
   <dd><%= @student.mobile %></dd>
   <dt><strong>qq:</strong></dt>
-  <dd><%=  @student.qq %> </dd>
+  <dd><%= @student.qq %> </dd>
   <dt><strong>微信:</strong></dt>
-  <dd><%=  @student.wx %> </dd>
+  <dd><%= @student.wx %> </dd>
   <dt><strong>学校:</strong></dt>
-  <dd><%=  @student.school.to_s %> </dd>
+  <dd><%= @student.school.to_s %> </dd>
   <dt><strong>专业:</strong></dt>
-  <dd><%=  @student.department %> </dd>
+  <dd><%= @student.department %> </dd>
   <dt><strong>年届:</strong></dt>
-  <dd><%=  @student.the %> </dd>
+  <dd><%= @student.the %> </dd>
   <dt><strong>付款方式:</strong></dt>
-  <dd><%=  @student.pay_type.to_i >0 ? '全款' : '分期' %> </dd>
+  <dd><%= @student.pay_type.to_i >0 ? '全款' : '分期' %> </dd>
   <dt><strong>课程:</strong></dt>
-  <dd><%=  @student.course %> </dd>
+  <dd><%= @student.course %> </dd>
   <dt><strong>招生专员:</strong></dt>
-  <dd><%=  @student.creator %> </dd>
+  <dd><%= @student.creator %> </dd>
   <dt><strong>创建时间:</strong></dt>
-  <dd><%=  @student.created_at %> </dd>
+  <dd><%= @student.created_at.strftime('%Y-%m-%d %H:%M:%S') %> </dd>
   <dt><strong>最后更新时间:</strong></dt>
-  <dd><%=  @student.updated_at %> </dd>
+  <dd><%= @student.updated_at.strftime('%Y-%m-%d %H:%M:%S') %> </dd>
 </dl>
+<h3>评论:</h3>
+<div class="row">
+  <div class="col-xs-8">
+    <% @comments.each do |comment| %>
+
+        <div class="timeline-item clearfix">
+
+
+          <div class="widget-box transparent">
+            <div class="widget-header widget-header-small">
+              <h5 class="widget-title smaller"> <%= comment.creator.to_s %></h5>
+
+                                                                    <span class="widget-toolbar no-border">
+                                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                                      <%= comment.created_at.strftime('%Y-%m-%d %H:%M:%S') %>
+                                                                    </span>
+
+                                                                    <span class="widget-toolbar">
+                                                                        <a href="#" data-action="reload">
+                                                                          <i class="ace-icon fa fa-refresh"></i>
+                                                                        </a>
+
+                                                                        <a href="#" data-action="collapse">
+                                                                          <i class="ace-icon fa fa-chevron-up"></i>
+                                                                        </a>
+                                                                    </span>
+            </div>
+
+            <div class="widget-body">
+              <div class="widget-main">
+                <blockquote class="blockquote-reverse">
+                <h5><%= comment.text %></h5>
+                        <p> ----</p>
+                    </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr/>
+    <% end %>
+
+
+  </div>
+</div>
 
 
 
 
-<%= link_to 'Edit', edit_student_path(@student) %> |
-<%= link_to 'Back', students_path %>
+<%= link_to '编辑', edit_student_path(@student) %> |
+<%= link_to '返回', students_path %>

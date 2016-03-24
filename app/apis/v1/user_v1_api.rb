@@ -42,16 +42,17 @@ class UserV1API < Grape::API
   end
 
   desc '根据招聘专员id获取[学生信息]', {
-                                  :headers => {
-                                      "Authentication-Token" => {
-                                          description: "用户Token",
-                                          required: true
-                                      }
-                                  },
+                                  # :headers => {
+                                  #     "Authentication-Token" => {
+                                  #         description: "用户Token",
+                                  #         required: true
+                                  #     }
+                                  # },
                                   :entity => Entities::Student
                               }
   params do
     optional :staff_id, type: String, desc: '招生专员[可为空]'
+    requires :token, type: String, desc: 'token'
   end
   post 'findsstudents' do
     array=[]
@@ -60,15 +61,16 @@ class UserV1API < Grape::API
 
       if user.has_role? :staff
         user.students.each do |u|
-          array << {id:u.id.to_s,name:u.name,:mobile=>u.mobile,qq:u.qq,wx:u.wx,id_card:u.id_card,pay_type:u.pay_type,course:u.course.to_s,school:u.school.to_s,department:u.department.to_s,the:u.the.to_s,state:u.state.to_s}
+          array << {id:u.id.to_s,name:u.name,:mobile=>u.mobile,qq:u.qq,wx:u.wx,id_card:u.id_card,pay_type:u.pay_type,course:u.course.to_s,school:u.school.to_s,department:u.department.to_s,the:u.the.to_s,state:u.state.to_s,:time=>u.created_at}
         end
       else
         return  {:message => "error"}
       end
     else
+      @current_user=User.find_by(authentication_token: params[:token])
       if @current_user.has_role? :staff
         @current_user.students.each do |u|
-          array << {id:u.id.to_s,name:u.name,:mobile=>u.mobile,qq:u.qq,wx:u.wx,id_card:u.id_card,pay_type:u.pay_type,course:u.course.to_s,school:u.school.to_s,department:u.department.to_s,the:u.the.to_s,state:u.state.to_s}
+          array << {id:u.id.to_s,name:u.name,:mobile=>u.mobile,qq:u.qq,wx:u.wx,id_card:u.id_card,pay_type:u.pay_type,course:u.course.to_s,school:u.school.to_s,department:u.department.to_s,the:u.the.to_s,state:u.state.to_s,:time=>u.created_at}
         end
       else
         return  {:message => "error"}

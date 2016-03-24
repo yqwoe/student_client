@@ -13,5 +13,7 @@ User.create(:name => "Admin",
 Role.create(:name => "admin", :desc => "管理员")
 Role.create(:name => "supervisor", :desc => "主管")
 Role.create(:name => "staff", :desc => "招聘专员")
+Role.create(:name => "userman", :desc => "用户管理")
 
 Role.find_by(:name => "admin").users << User.find_by(:mobile => "18530924885")
+Role.find_by(:name => "userman").users << User.find_by(:mobile => "18530924885")
