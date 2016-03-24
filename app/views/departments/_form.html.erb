@@ -1,0 +1,39 @@
+<%= form_for(@department) do |f| %>
+  <% if @department.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@department.errors.count, "error") %> prohibited this department from being saved:</h2>
+
+      <ul>
+      <% @department.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+    <div class="control-group">
+      <%= f.label :name, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :name, :class => 'form-control' %>
+      </div>
+    </div>
+    <!--<script>-->
+//        $(function(){
+            <!--<% if @department.school_id.present? %>-->
+//            $('#department_school').val('<%= @department.school_id  %>');
+            <!--<% end%>-->
+//        })
+    <!--</script>-->
+
+    <!--<div class="control-group">-->
+      <!--<%= f.label "角色", :class => 'control-label' %>-->
+      <!--<div class="controls">-->
+        <!--<select name="department[school]" id="department_school" class="form-control">-->
+          <!--<option value>-&#45;&#45;请选择学校-&#45;&#45;</option>-->
+          <!--<%= options_for_select(School.all.map{|j| [j.name,j.id]}) %>-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>-->
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

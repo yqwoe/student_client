@@ -1,0 +1,127 @@
+<%= form_for(@student) do |f| %>
+  <% if @student.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student from being saved:</h2>
+
+      <ul>
+      <% @student.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <div class="control-group">
+      <%= f.label "名字", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :name, :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "qq", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :qq, :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "微信", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :wx, :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "手机", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :mobile, :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "身份证", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :id_card, :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "支付方式", :class => 'control-label' %>
+      <div class="controls">
+        <select id="student_pay_type" name="student[pay_type]" class = 'form-control'  >
+          <option value="0">全款支付</option>
+          <option value="1">分期支付</option>
+        </select>
+      </div>
+    </div>
+    <script>
+        $(function(){
+            <% if @student.school.present? %>
+            $('#student_school').val('<%= @student.school_id  %>');
+            <% end%>
+            <% if @student.pay_type.present? %>
+            $('#student_pay_type').val('<%= @student.pay_type  %>');
+            <% end%>
+            <% if @student.department.present? %>
+            $('#student_department').val('<%= @student.department_id  %>');
+            <% end%>
+            <% if @student.the.present? %>
+            $('#student_the').val('<%= @student.the_id  %>');
+            <% end%>
+            <% if @student.course.present? %>
+            $('#student_course').val('<%= @student.course_id  %>');
+            <% end%>
+            <% if @student.state.present? %>
+            $('#student_state').val('<%= @student.state  %>');
+            <% end%>
+
+        })
+    </script>
+
+    <div class="control-group">
+      <%= f.label "学校", :class => 'control-label' %>
+      <div class="controls">
+        <select name="student[school]" id="student_school" class="form-control">
+          <option value>---请选择学校---</option>
+          <%= options_for_select(School.all.map{|j| [j.name,j.id]}) %>
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "专业", :class => 'control-label' %>
+      <div class="controls">
+        <select name="student[department]" id="student_department" class="form-control">
+          <option value>---请选择专业---</option>
+          <%= options_for_select(Department.all.map{|j| [j.name,j.id]}) %>
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "年届", :class => 'control-label' %>
+      <div class="controls">
+        <select name="student[the]" id="student_the" class="form-control">
+          <option value>---请选择年届---</option>
+          <%= options_for_select(The.all.map{|j| [j.name,j.id]}) %>
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "课程", :class => 'control-label' %>
+      <div class="controls">
+        <select name="student[course]" id="student_course" class="form-control">
+          <option value>---请选择课程---</option>
+          <%= options_for_select(Course.all.map{|j| [j.name,j.id]}) %>
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label "是否开始学习", :class => 'control-label' %>
+      <div class="controls">
+        <select name="student[state]" id="student_state" class="form-control">
+          <option value>-----------</option>
+          <option value="1">开始学习</option>
+        </select>
+      </div>
+    </div>
+
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

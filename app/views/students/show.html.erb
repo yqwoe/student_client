@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+
+<dl class="dl-horizontal">
+  <dt><strong>名字:</strong></dt>
+  <dd><%= @student.name %></dd>
+  <dt><strong>手机号:</strong></dt>
+  <dd><%= @student.mobile %></dd>
+  <dt><strong>qq:</strong></dt>
+  <dd><%=  @student.qq %> </dd>
+  <dt><strong>微信:</strong></dt>
+  <dd><%=  @student.wx %> </dd>
+  <dt><strong>学校:</strong></dt>
+  <dd><%=  @student.school.to_s %> </dd>
+  <dt><strong>专业:</strong></dt>
+  <dd><%=  @student.department %> </dd>
+  <dt><strong>年届:</strong></dt>
+  <dd><%=  @student.the %> </dd>
+  <dt><strong>付款方式:</strong></dt>
+  <dd><%=  @student.pay_type.to_i >0 ? '全款' : '分期' %> </dd>
+  <dt><strong>课程:</strong></dt>
+  <dd><%=  @student.course %> </dd>
+  <dt><strong>招生专员:</strong></dt>
+  <dd><%=  @student.creator %> </dd>
+  <dt><strong>创建时间:</strong></dt>
+  <dd><%=  @student.created_at %> </dd>
+  <dt><strong>最后更新时间:</strong></dt>
+  <dd><%=  @student.updated_at %> </dd>
+</dl>
+
+
+
+
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'Back', students_path %>

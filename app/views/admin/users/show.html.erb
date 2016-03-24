@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+
+<dl class="dl-horizontal">
+  <dt><strong>用户名称:</strong></dt>
+  <dd><%= @user.name %></dd>
+  <dt><strong>手机号:</strong></dt>
+  <dd><%= @user.mobile %></dd>
+  <dt><strong>邮箱:</strong></dt>
+  <dd><%=  @user.email %> </dd>
+  <dt><strong>创建时间:</strong></dt>
+  <dd><%=  @user.created_at %> </dd>
+  <dt><strong>最后更新时间:</strong></dt>
+  <dd><%=  @user.updated_at %> </dd>
+</dl>
+
+<%= link_to '编辑', edit_admin_user_path(@user) %> |
+<%= link_to '返回', admin_users_path %>

@@ -1,0 +1,26 @@
+
+<h1>角色列表</h1>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>角色名称</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @userinfos.each do |userinfo| %>
+      <tr>
+        <td><%= userinfo.name %></td>
+        <td><%= link_to '查看', userinfo %>
+          <%= link_to '编辑', edit_userinfo_path(userinfo) %>
+        <%= link_to '删除', userinfo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to '新建角色', new_userinfo_path %>

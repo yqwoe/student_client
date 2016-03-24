@@ -1,0 +1,88 @@
+<%= form_for([:admin,@user]) do |f| %>
+    <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="control-group">
+      <%= f.label :name, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :name, :class => 'form-control' %>
+      </div>
+    </div>
+    <script>
+        $(function(){
+            <% if @user.userinfo_id.present? %>
+            $('#user_parent').val('<%= @user.parent_id  %>');
+            <% end%>
+        })
+    </script>
+
+    <div class="control-group">
+      <%= f.label "角色", :class => 'control-label' %>
+      <div class="controls">
+        <select name="user[parent]" id="user_parent" class="form-control">
+          <option value>---请选择主管领导---</option>
+          <%= options_for_select(Role.find_by(:name=>'supervisor').users.map{|j| [j.name,j.id]}) %>
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :mobile, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :mobile, :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :email, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.email_field :email, autofocus: true, :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :password, :class => 'control-label' %>
+      <div class="controls">
+        <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> 个字符)</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "off", :class => 'form-control' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :password_confirmation, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.password_field :password_confirmation, autocomplete: "off", :class => 'form-control' %>
+      </div>
+    </div>
+    <% if current_user.has_role?(:admin) || current_user.has_role?(:supervisor) %>
+        <table width=700px>
+          <tr>
+            <dt><strong>权限:</strong></dt>
+          </tr>
+          <tr>
+            <% @roles.each do |role| %>
+                <% if policy(:user).isAdmin? %>
+                    <td>
+                      <%= role.desc %> <%= check_box_tag "user[roles][]", role.name, @user.roles.include?(role) %>
+                    </td>
+                <% elsif 'admin' != role.name && 'supervisor' != role.name %>
+                    <td>
+                      <%= role.desc %> <%= check_box_tag "user[roles][]", role.name, @user.roles.include?(role) %>
+                    </td>
+                <% end %>
+            <% end %>
+
+    <% end %>
+    </tr>
+    </table>
+    <div class="actions">
+      <%= f.submit "保存"%>
+    </div>
+<% end %>

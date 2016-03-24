@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>年届</th>
+      <th >操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @thes.each do |the| %>
+      <tr>
+        <td><%= the.name %></td>
+        <td><%= link_to '查看', the %> <%= link_to '编辑', edit_the_path(the) %> <%= link_to '删除', the, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate @thes %>
+<br>
+
+<%= link_to '新建年届', new_the_path %>
