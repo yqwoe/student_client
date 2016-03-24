@@ -15,14 +15,14 @@ class StudentV1API < Grape::API
   end
 
   desc '创建学生信息', {
-                              # :headers => {
-                              #     "Authentication-Token" => {
-                              #         description: "用户Token",
-                              #         required: true
-                              #     }
-                              # },
-                              :entity => Entities::Student
-                          }
+                   # :headers => {
+                   #     "Authentication-Token" => {
+                   #         description: "用户Token",
+                   #         required: true
+                   #     }
+                   # },
+                   :entity => Entities::Student
+               }
   params do
     requires :student, type: String, desc: '学生信息{"name":"学生姓名","mobile":"手机号","qq":"qq","wx":"微信","id_card":"身份证","pay_type":"支付类型0全款1分期","course":"课程id","school":"学校id","department":"专业id","the":"年届id","state":"是否开始学习 0客户1开始学习"
 }'
@@ -30,7 +30,7 @@ class StudentV1API < Grape::API
   post 'createstudent' do
     json=JSON.parse(params[:student])
     token=json['token']
-    json=json.delete_if {|k,v| k == 'token'}
+    json=json.delete_if { |k, v| k == 'token' }
     student=Student.new(json)
     student.creator=User.find_by(authentication_token: token)
     if student.save
@@ -62,6 +62,39 @@ class StudentV1API < Grape::API
     else
       error!({"message" => terminator.errors}, 403)
     end
+  end
+
+
+  desc '创建学生信息', {
+                   :headers => {
+                       "Authentication-Token" => {
+                           description: "用户Token",
+                           required: true
+                       }
+                   },
+                   :entity => Entities::Student
+               }
+  params do
+    requires :school_id, type: String, desc: '学校id'
+    requires :department_id, type: String, desc: '专业id'
+  end
+  post 'updatestudent' do
+    conditions={}
+    array=[]
+    if params[:school_id].present?
+      conditions={:school_id => params[:school_id]}
+    end
+    if params[:department_id].present?
+      conditions={:department_id => params[:department_id]}
+    end
+    if params[:school_id].present? && params[:department_id].present?
+      conditions={:school_id => params[:school_id], :department_id => params[:department_id]}
+    end
+    student=Student.where(conditions)
+    student.each do |s|
+      array << {id: u.id.to_s, name: u.name, :mobile => u.mobile, qq: u.qq, wx: u.wx, id_card: u.id_card, pay_type: u.pay_type, course: u.course.to_s, school: u.school.to_s, department: u.department.to_s, the: u.the.to_s, state: u.state.to_s, :time => u.created_at}
+    end
+    array
   end
 
 end
