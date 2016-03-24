@@ -54,6 +54,7 @@ class StudentV1API < Grape::API
     requires :state, type: String, desc: '学生id'
   end
   post 'updatestudent' do
+    p "#{params}"
     student=Student.find(params[:student_id])
     student.state=params[:state].to_i
     if student.save
