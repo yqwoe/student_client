@@ -33,7 +33,11 @@ class SchoolV1API < Grape::API
       The.all.each do |s|
         tarray << {id:s.id.to_s,name:s.name}
       end
-    {'school':array,'department':darray,'the':tarray}
+    carray=[]
+    Course.all.each do |s|
+      carray << {id:s.id.to_s,name:s.name}
+    end
+    {'school':array,'department':darray,'the':tarray,'course':carray}
   end
 #   desc '专业'
 #   params do
