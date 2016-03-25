@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.create(:name => "Admin",
             :mobile => "18530924885",
+            :email => "123456789@qq.com",
             :password => "yqwoe900316",
             :password_confirmation => "yqwoe900316")
 
@@ -15,5 +16,5 @@ Role.create(:name => "supervisor", :desc => "主管")
 Role.create(:name => "staff", :desc => "招聘专员")
 Role.create(:name => "userman", :desc => "用户管理")
 
-Role.find_by(:name => "admin").users << User.find_by(:mobile => "18530924885")
-Role.find_by(:name => "userman").users << User.find_by(:mobile => "18530924885")
+Role.find_by(:name => "admin").users << User.find_by(:mobile => "18530924885",:email => "123456789@qq.com")
+Role.find_by(:name => "userman").users << User.find_by(:mobile => "18530924885",:email => "123456789@qq.com")

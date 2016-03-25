@@ -5,7 +5,7 @@ development:
     default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: student_client_development
+      database: student_client
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
@@ -95,7 +95,7 @@ development:
 
         # The file containing a set of concatenated certification authority certifications
         # used to validate certs passed from the other end of the connection.
-        # ssl_ca_cert: /path/to/ca.cert
+        # ssl_ca_cert: /path/to/ca.certsudo
 
 
   # Configure Mongoid specific options. (optional)
