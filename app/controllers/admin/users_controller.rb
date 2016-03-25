@@ -27,11 +27,11 @@ class Admin::UsersController < ApplicationController
       params[:user][:password] ||= params[:password]
     end
 
-    if params[:user][:parent].blank?
-      user_params[:parent]= current_user
-    end
 
     @user = User.new(user_params)
+    if params[:user][:parent].blank?
+      @user.parent= current_user
+    end
     unless params[:user][:roles].blank?
       params[:user][:roles].each do |role|
         @user.add_role role
