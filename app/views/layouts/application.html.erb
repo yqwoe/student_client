@@ -60,10 +60,12 @@
             <li><%= link_to "年届", thes_path %></li>
         <% end %>
       </ul>
+      <% if policy(:user).isSupervisor? || policy(:user).isUserman?|| policy(:user).isStaff? %>
       <%= form_tag students_path, method: :get, class: "navbar-form navbar-left" do %>
           <div class="form-group">
             <%= search_field_tag "q", params["q"], class: "form-control input-sm search-form", placeholder: "输入学员名字或手机号" %>
           </div>
+      <% end %>
       <% end %>
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
