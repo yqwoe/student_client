@@ -29,8 +29,8 @@ class Admin::UsersController < ApplicationController
 
 
     @user = User.new(user_params)
-    if params[:user][:parent].blank?
-      @user.parent= current_user
+    if params[:user][:parent].balnk?
+      @user.parent=current_user
     end
     unless params[:user][:roles].blank?
       params[:user][:roles].each do |role|
@@ -102,6 +102,6 @@ class Admin::UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:name, :mobile, :email, :parent, :password, :password_confirmation)
+    params.require(:user).permit(:name, :mobile, :email, :parent, :password, :password_confirmation, :role)
   end
 end
