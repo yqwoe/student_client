@@ -3,7 +3,7 @@ class Admin::UsersController < ApplicationController
 
   def index
     if policy(:user).isUserman?
-      @users=User.page(params[:page])
+      @users=current_user.childs.page(params[:page])
     end
     if policy(:user).isSupervisor? || policy(:user).isAdmin?
       @users=current_user.childs.page(params[:page])
