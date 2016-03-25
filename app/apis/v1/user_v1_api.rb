@@ -59,10 +59,10 @@ class UserV1API < Grape::API
   post 'findsstudents' do
     array=[]
     if params[:staff_id].present?
-      user = User.find(params[:staff_id])
-
-      if user.has_role? :staff
-        user.students.order('created_at desc').page(params[:page]).per(params[:per_page]).each do |u|
+      user = User.find_by(authentication_token: params[:token])
+      students=Student.where(:creator => User.find(params[:staff_id]), :state => params[:state]).order('created_at desc').page(params[:page]).per(params[:per_page])
+      if user.has_role? :supervisor
+        students.each do |u|
           array << {id: u.id.to_s, name: u.name, :mobile => u.mobile, qq: u.qq, wx: u.wx, id_card: u.id_card, pay_type: u.pay_type, course: u.course.to_s, school: u.school.to_s, department: u.department.to_s, the: u.the.to_s, state: u.state.to_s, :time => u.created_at}
         end
       else

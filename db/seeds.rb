@@ -7,8 +7,8 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.create(:name => "Admin",
             :mobile => "18530924885",
-            :password => "123456789",
-            :password_confirmation => "123456789")
+            :password => "yqwoe900316",
+            :password_confirmation => "yqwoe900316")
 
 Role.create(:name => "admin", :desc => "管理员")
 Role.create(:name => "supervisor", :desc => "主管")

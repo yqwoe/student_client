@@ -82,22 +82,61 @@ class StudentV1API < Grape::API
   paginate per_page: 20, max_per_page: 30, offset: 5
   post 'students' do
     p "===============#{params['Authentication-Token']}"
-    conditions={}
+    # conditions={}
     array=[]
-    if params[:school_id].present?
-      conditions={:school_id => params[:school_id]}
-    end
-    if params[:department_id].present?
-      conditions={:department_id => params[:department_id]}
-    end
-    if params[:school_id].present? && params[:department_id].present?
-      conditions={:school_id => params[:school_id], :department_id => params[:department_id]}
-    end
+    # if params[:school_id].present?
+    #   conditions={:school_id => params[:school_id]}
+    # end
+    # if params[:department_id].present?
+    #   conditions={:department_id => params[:department_id]}
+    # end
+    # if params[:school_id].present? && params[:department_id].present?
+    #   conditions={:school_id => params[:school_id], :department_id => params[:department_id]}
+    # end
     if params[:staff_id].present?
-      student=Student.where(conditions.merge({:creator_id=>params[:staff_id]})).order('created_at desc').page(params[:page]).per(params[:per_page])
+      student=Student.by_school(params[:school_id])
+                  .by_department(params[:department_id]).by_creator(User.find(params[:staff_id]))
+                  .order('created_at desc').page(params[:page]).per(params[:per_page])
     else
 
-      student=Student.where(conditions.merge(:creator=>User.find_by(authentication_token: params['Authentication-Token']))).page(params[:page]).order('created_at desc').per(params[:per_page])
+      student=Student.by_school(params[:school_id])
+                  .by_department(params[:department_id]).by_creator(User.find_by(authentication_token: params['Authentication-Token'])).page(params[:page]).order('created_at desc').per(params[:per_page])
+    end
+
+    student.each do |u|
+      array << {id: u.id.to_s, name: u.name, :mobile => u.mobile, qq: u.qq, wx: u.wx, id_card: u.id_card, pay_type: u.pay_type, course: u.course.to_s, school: u.school.to_s, department: u.department.to_s, the: u.the.to_s, state: u.state.to_s, :time => u.created_at}
+    end
+    array
+  end
+
+
+
+  desc '查询学生信息', {
+                   :headers => {
+                       "Authentication-Token" => {
+                           description: "用户Token",
+                           required: true
+                       }
+                   },
+                   :entity => Entities::Student
+               }
+  params do
+    optional :mobile, type: String, desc: '手机号'
+    optional :name, type: String, desc: '名字'
+    optional :staff_id, type: String, desc: '招聘专员id'
+  end
+  # paginate per_page: 20, max_per_page: 30, offset: 5
+  post 'search' do
+    p "===============#{params['Authentication-Token']}"
+    array=[]
+    if params[:staff_id].present?
+      student=Student.by_mobile(params[:mobile]).by_name(params[:name]).by_creator(User.find(params[:staff_id]))
+                  .order('created_at desc')
+    else
+
+      student=Student.by_mobile(params[:mobile])
+                  .by_name(params[:name])
+                  .by_creator(User.find_by(authentication_token: params['Authentication-Token'])).order('created_at desc')
     end
 
     student.each do |u|
