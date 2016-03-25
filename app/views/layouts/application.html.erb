@@ -49,11 +49,9 @@
     <%= link_to '学生信息管理', root_path, class: 'navbar-brand' %>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
       <ul class="nav navbar-nav">
-        <% if policy(:user).isSupervisor? || policy(:user).isUserman?|| policy(:user).isStaff? %>
+        <% if policy(:user).isSupervisor? || policy(:user).isUserman?|| policy(:user).isStaff? || policy(:user).isAdmin? %>
             <li><%= link_to "用户管理", admin_users_path %></li>
             <li><%= link_to "客户信息", students_path %></li>
-        <% end %>
-        <% if policy(:user).isAdmin? %>
             <li><%= link_to "课程", courses_path %></li>
             <li><%= link_to "学校", schools_path %></li>
             <li><%= link_to "专业", departments_path %></li>
@@ -90,11 +88,9 @@
       <div class="well sidebar-nav">
         <h3>学生信息管理</h3>
         <ul class="nav nav-list">
-          <% if policy(:user).isSupervisor? || policy(:user).isUserman?|| policy(:user).isStaff? %>
+          <% if policy(:user).isSupervisor? || policy(:user).isUserman?|| policy(:user).isStaff? || policy(:user).isAdmin? %>
               <li><%= link_to "用户管理", admin_users_path %></li>
               <li><%= link_to "客户信息", students_path %></li>
-          <% end %>
-          <% if policy(:user).isAdmin? %>
               <li><%= link_to "课程", courses_path %></li>
               <li><%= link_to "学校", schools_path %></li>
               <li><%= link_to "专业", departments_path %></li>

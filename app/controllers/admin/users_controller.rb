@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
     if policy(:user).isUserman?
       @users=User.page(params[:page])
     end
-    if policy(:user).isSupervisor?
+    if policy(:user).isSupervisor? || policy(:user).isAdmin?
       @users=current_user.childs.page(params[:page])
     end
   end
