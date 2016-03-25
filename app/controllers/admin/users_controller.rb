@@ -2,13 +2,10 @@ class Admin::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    if policy(:user).isUserman? && current_user.mobile == '18530924885'
-      @users=User.all
+    if policy(:user).isUserman?|| policy(:user).isAdmin?
+      @users=User.page(params[:page])
     end
-    if policy(:user).isUserman?
-      @users=User.where(:mobile.ne=>'18530924885')
-    end
-    if policy(:user).isSupervisor? || policy(:user).isAdmin?
+    if policy(:user).isSupervisor?
       @users=current_user.childs.page(params[:page])
     end
   end
