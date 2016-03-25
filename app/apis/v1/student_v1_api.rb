@@ -83,7 +83,7 @@ class StudentV1API < Grape::API
   post 'students' do
     p "===============#{params['Authentication-Token']}"
     conditions={}
-    array=[]git
+    array=[]
     if params[:school_id].present?
       conditions={:school_id => params[:school_id]}
     end
