@@ -19,7 +19,7 @@
     </div>
     <script>
         $(function(){
-            <% if @user.userinfo_id.present? %>
+            <% if @user.parent_id.present? %>
             $('#user_parent').val('<%= @user.parent_id  %>');
             <% end%>
         })
