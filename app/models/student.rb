@@ -25,7 +25,7 @@ class Student
     where(:mobile=>/#{mobile}/) if mobile.present?
   }
   scope :by_name,->(name){
-    where(:mobile=>/#{name}/) if name.present?
+    where(:name=>/#{name}/) if name.present?
   }
   scope :by_creator,->(c){
     where(:creator=>c) if c.present?
