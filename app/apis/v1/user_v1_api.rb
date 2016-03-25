@@ -1,6 +1,6 @@
 class UserV1API < Grape::API
   include BCrypt
-
+  include Grape::Kaminari
   format :json
   helpers do
     def current_user
@@ -55,13 +55,14 @@ class UserV1API < Grape::API
     requires :token, type: String, desc: 'token'
     requires :state, type: String, desc: 'state'
   end
+  paginate per_page: 20, max_per_page: 30, offset: 5
   post 'findsstudents' do
     array=[]
     if params[:staff_id].present?
       user = User.find(params[:staff_id])
 
       if user.has_role? :staff
-        user.students.each do |u|
+        user.students.order('created_at desc').page(params[:page]).per(params[:per_page]).each do |u|
           array << {id: u.id.to_s, name: u.name, :mobile => u.mobile, qq: u.qq, wx: u.wx, id_card: u.id_card, pay_type: u.pay_type, course: u.course.to_s, school: u.school.to_s, department: u.department.to_s, the: u.the.to_s, state: u.state.to_s, :time => u.created_at}
         end
       else
@@ -70,7 +71,7 @@ class UserV1API < Grape::API
     else
       @current_user=User.find_by(authentication_token: params[:token])
       if @current_user.has_role? :staff
-        students=Student.where(:creator => @current_user, :state => params[:state])
+        students=Student.where(:creator => @current_user, :state => params[:state]).order('created_at desc').page(params[:page]).per(params[:per_page])
         students.each do |u|
           array << {id: u.id.to_s, name: u.name, :mobile => u.mobile, qq: u.qq, wx: u.wx, id_card: u.id_card, pay_type: u.pay_type, course: u.course.to_s, school: u.school.to_s, department: u.department.to_s, the: u.the.to_s, state: u.state.to_s, :time => u.created_at}
         end

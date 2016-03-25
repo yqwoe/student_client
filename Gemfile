@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -67,9 +67,10 @@ gem 'rest-client'
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger'
+gem 'grape-kaminari'
 
 
 gem 'mina'
-gem "puma"
+# gem "puma"
 # gem 'grape-swagger-rails',github:'ruby-grape/grape-swagger-rails'
 

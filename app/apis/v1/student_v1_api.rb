@@ -1,5 +1,5 @@
 class StudentV1API < Grape::API
-
+  include Grape::Kaminari
   format :json
   helpers do
     def current_user
@@ -77,10 +77,13 @@ class StudentV1API < Grape::API
   params do
     requires :school_id, type: String, desc: '学校id'
     requires :department_id, type: String, desc: '专业id'
+    optional :staff_id, type: String, desc: '专业id'
   end
-  post 'updatestudent' do
+  paginate per_page: 20, max_per_page: 30, offset: 5
+  post 'students' do
+    p "===============#{params['Authentication-Token']}"
     conditions={}
-    array=[]
+    array=[]git
     if params[:school_id].present?
       conditions={:school_id => params[:school_id]}
     end
@@ -90,8 +93,14 @@ class StudentV1API < Grape::API
     if params[:school_id].present? && params[:department_id].present?
       conditions={:school_id => params[:school_id], :department_id => params[:department_id]}
     end
-    student=Student.where(conditions)
-    student.each do |s|
+    if params[:staff_id].present?
+      student=Student.where(conditions.merge({:creator_id=>params[:staff_id]})).order('created_at desc').page(params[:page]).per(params[:per_page])
+    else
+
+      student=Student.where(conditions.merge(:creator=>User.find_by(authentication_token: params['Authentication-Token']))).page(params[:page]).order('created_at desc').per(params[:per_page])
+    end
+
+    student.each do |u|
       array << {id: u.id.to_s, name: u.name, :mobile => u.mobile, qq: u.qq, wx: u.wx, id_card: u.id_card, pay_type: u.pay_type, course: u.course.to_s, school: u.school.to_s, department: u.department.to_s, the: u.the.to_s, state: u.state.to_s, :time => u.created_at}
     end
     array
