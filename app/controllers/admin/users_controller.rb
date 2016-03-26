@@ -66,13 +66,14 @@ class Admin::UsersController < ApplicationController
 
 
       if result
-        Role.all.each do |role|
-          @user.revoke role.name
-        end
-
+        # Role.all.each do |role|
+        #   @user.revoke role.name
+        # end
+        @user['role_ids'] = []
         unless params[:user][:roles].blank?
           params[:user][:roles].each do |role|
-            @user.add_role role
+            role_model = Role.where({:name => role}).first
+            @user['role_ids'] << role_model.id if role_model.present?
           end
         end
         format.html { redirect_to [:admin, @user], notice: 'User was successfully updated.' }
