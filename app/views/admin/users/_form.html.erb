@@ -30,7 +30,7 @@
       <div class="controls">
         <select name="user[parent]" id="user_parent" class="form-control">
           <option value>---请选择主管领导---</option>
-          <%= options_for_select(User.where(role:Role.find_by(:name=>'supervisor')).map{|j| [j.name,j.id]}) %>
+          <%= options_for_select(User.where(role_id:Role.find_by(:name=>'supervisor').id).map{|j| [j.name,j.id]}) %>
         </select>
       </div>
     </div>
